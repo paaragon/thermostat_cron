@@ -5,7 +5,7 @@ import temp_service
 
 def main():
     time_on = db.get_minutes_on()
-    if time_on > int(os.environ["MAX_MINUTES_ON"]):
+    if time_on < int(os.environ["MAX_MINUTES_ON"]):
         print("no max minutes reached")
         return
 
