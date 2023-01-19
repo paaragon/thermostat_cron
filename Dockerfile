@@ -1,17 +1,17 @@
-# Python Base Image
-FROM python:3.9-alpine
+FROM python:3.7
+RUN apt-get update && apt-get -y install cron vim
+WORKDIR /app
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Creating Working 
-WORKDIR /py_cronjob
-
-# Copying the crontab file 
 COPY crontab /etc/cron.d/crontab
+COPY main.py /app/main.py
+COPY temp_service.py /app/temp_service.py
+COPY db.py /app/db.py
 
-# Copy the each file from docker_py_project to py_cronjob in docker container
-ADD . /py_cronjob
+RUN chmod 0644 /etc/cron.d/crontab
+RUN /usr/bin/crontab /etc/cron.d/crontab
 
-# run the crontab file
-RUN crontab /etc/cron.d/crontab
+# run crond as main process of container
 
-# Executing crontab command
-CMD ["cron", "-f"]
+CMD printenv > /etc/environment && cron -f
