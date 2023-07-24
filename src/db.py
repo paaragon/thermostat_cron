@@ -1,6 +1,7 @@
 import os
 from contextlib import contextmanager
 from psycopg2 import pool
+from logger import logger as log
 
 db_pool = pool.SimpleConnectionPool(1, 10,
                                     host=os.environ["PG_HOST"],
@@ -50,7 +51,7 @@ def get_last_setted():
             result = cursor.fetchall()
             return int(result[0][0])
         except Exception as e:
-            print(str(e))
+            log.error(str(e))
 
 
 def get_last_mode():
@@ -60,4 +61,4 @@ def get_last_mode():
             result = cursor.fetchall()
             return result[0][0]
         except Exception as e:
-            print(str(e))
+            log.error(str(e))
