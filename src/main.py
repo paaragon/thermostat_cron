@@ -5,6 +5,11 @@ from logger import logger as log
 
 def main():
     time_on = db.get_minutes_on()
+    
+    if time_on is None:
+        log.info("no info about time_on")
+        return
+
     if time_on < int(os.environ["MAX_MINUTES_ON"]):
         log.info("no max minutes reached")
         return
